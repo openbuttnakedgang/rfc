@@ -1,0 +1,71 @@
+"@protocol-version" = "1.0"
+
+[time] # регистр текущего времени устройства
+"@type" = "u32"
+
+[desc] # Описание устройства
+type = "u32"   # Тип
+name = "str"   # Полное имя
+ver = "str"    # Версия прошивки
+serial = "u32" # Серийный номер
+
+[ctrl]
+"@access" = "RW"
+conf = "bool"      # режим Постановка
+record = "bool"    # режим Запись
+vis = "bool"       # визуализация
+erase = "()"       # сброс всех параметров обследования
+calib = "bool"     # режим Калибровка
+goto-loader = "()" # переход в загрузчик
+[ctrl.event]       # запись события (метки)
+"@access" = "WO"
+"@type" = "[u8]"
+
+[state]
+block-cnt = "u32"   # записано блоков
+voltage = "i32"     # напряжение питания
+current = "i32"     # потребляемый ток
+stop-reason = "u32" # причина остановки записи обследования
+
+[conf]
+"@access" = "RW"
+mode = "u16"    # idfmt
+cyclic = "bool" # циклический режим работы
+time = "u32"    # установка времени
+
+[io]
+"@access" = "RW"
+status = "u32" # 0 - idle, 1 - busy, 2 - timeout
+[io.file]      # Чтение поблочно записи обследования
+pos = "u32"    # позиция начала
+count = "u32"  # количество блоков
+start = "()"   # начать передачу
+[io.store]     # Чтение/запись произвольных данных в ячейки по 32 байта
+idx = "u32"    # Выбор ячейки
+cell = "[u8]"  # Чтение/запись ячейки
+[io.store.max] # Максимальное количество ячеек
+"@type" = "u32"
+"@access" = "RO"
+
+[calib] # Калибровки, запись в эти регистры возможна только из режима калибровки
+"@access" = "RW"
+[calib.ecg]
+k = "i32"
+b = "i32"
+[calib.reo]
+k = "i32"
+b = "i32"
+[calib.acc-in]
+k = "i32"
+b = "i32"
+
+[survey] # Параметры обследования
+"@access" = "RW"
+id = "u32"
+surname = "str"
+name = "str"
+patronymic = "str"
+sex = "str"
+birth = "str"
+patient_id = "str"
+start_time = "u32"
